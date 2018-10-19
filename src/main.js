@@ -10,9 +10,17 @@ Vue.use(MintUI)
 
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
+Vue.http.options.root = 'http://027xin.com:8899';
+
+import moment from 'moment';
+Vue.filter('dataFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
+  return moment(dataStr).format(pattern);
+})
+
 
 import './assets/mui/css/mui.min.css'
 import './assets/mui/css/icons-extra(1).css'
+
 
 Vue.config.productionTip = false
 
