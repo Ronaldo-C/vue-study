@@ -11,6 +11,7 @@ Vue.use(MintUI)
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 Vue.http.options.root = 'http://027xin.com:8899';
+Vue.http.options.emulateJSON = true;
 
 import moment from 'moment';
 Vue.filter('dataFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
