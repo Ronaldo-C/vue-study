@@ -7,7 +7,7 @@
         <mt-button type="primary" size="large" @click="postComment">发表评论</mt-button>
 
         <div class="cmt-list">
-            <div class="cmt-item" v-for="(item, index) in commentInfo" :key="item.add_time">
+            <div class="cmt-item" v-for="(item, index) in commentInfo" :key="index">
                 <div class="cmt-title">
                 第{{index+1}}楼 &nbsp;&nbsp;用户：{{item.user_name}}&nbsp;&nbsp;发表时间：{{item.add_time | dataFormat}}
                 </div>
@@ -54,7 +54,7 @@ export default {
             if (!this.msg.trim()) {
                 return Toast('评论内容不能为空!');
             }
-            this.$http.post('api/postcomment/' + this.id, {content: this.msg.trim()}).then(result => {
+            this.$http.post('api/postcomment/' + this.id, {content: this.msg}).then(result => {
                 if (result.body.status === 0) {
                     var cmt = {
                         add_time: Date.now(),
@@ -62,6 +62,7 @@ export default {
                         user_name: '武汉金融港前端19最帅的人'
                     }
                     this.commentInfo.unshift(cmt);
+                    this.msg = '';
                 }else {
                     Toast('发表评论失败');
                 }
@@ -87,7 +88,7 @@ export default {
         .cmt-list {
             margin: 5px 0;
             .cmt-item {
-            font-size: 13px;
+            font-size: 10px;
             .cmt-title {
                 line-height: 30px;
                 background-color: #ccc;

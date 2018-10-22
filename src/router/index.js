@@ -6,6 +6,9 @@ import shopcar from '@/components/shopcar.vue'
 import search from '@/components/search.vue'
 import newList from '@/components/newList.vue'
 import newListInfo from '@/components/newListInfo.vue'
+import picShow from '@/components/picShow.vue'
+import picinfo from '@/components/photoinfo.vue'
+import goodList from '@/components/goodList.vue'
 
 Vue.use(Router)
 
@@ -38,6 +41,18 @@ export default new Router({
     {
       path: '/home/newListInfo/:id',
       component: newListInfo
+    },
+    {
+      path: '/home/picShow',
+      component: picShow
+    },
+    {
+      path: '/home/photoinfo/:id',
+      component: picinfo
+    },
+    {
+      path: '/home/goodList',
+      component: goodList
     },
     {
       path: '/',

@@ -22,7 +22,7 @@ import comment from './comment.vue';
 export default {
     data () {
         return {
-            id: this.$route.params.id ,
+            id: this.$route.params.id,
             newsinfo: []
         }
     },
@@ -47,7 +47,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
     .newsinfo-container {
         padding: 0 4px;
         .title {
@@ -62,7 +62,7 @@ export default {
             display: flex;
             justify-content: space-between;
         }
-        .content {
+        /deep/ .content {
             img {
             width: 100%;
             }

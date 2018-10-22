@@ -18,6 +18,8 @@ Vue.filter('dataFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
   return moment(dataStr).format(pattern);
 })
 
+import VuePreview from 'vue-preview';
+Vue.use(VuePreview);
 
 import './assets/mui/css/mui.min.css'
 import './assets/mui/css/icons-extra(1).css'
