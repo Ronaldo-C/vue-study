@@ -1,10 +1,6 @@
 <template>
   <div>
-    <mt-swipe :auto="4000">
-        <mt-swipe-item v-for="(item, index) in imageList" :key="index">
-            <img :src="item.img" alt="">
-        </mt-swipe-item>
-    </mt-swipe>
+    <swipe :imageList="imageList" :isfull="true"></swipe>
     <div class="mui-content">
         <ul class="mui-table-view mui-grid-view mui-grid-9">
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/newList">
@@ -32,6 +28,7 @@
 
 <script>
 import { Toast } from 'mint-ui';
+import swipe from './swipe.vue'
 export default {
   data() {
     return {
@@ -51,20 +48,14 @@ export default {
         }
       });
     }
+  },
+  components: {
+    swipe
   }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.mint-swipe {
-  height: 300px;
-  .mint-swipe-item {
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
 .mui-content {
     img {
         width: 60px;

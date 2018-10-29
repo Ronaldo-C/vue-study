@@ -9,6 +9,9 @@ import newListInfo from '@/components/newListInfo.vue'
 import picShow from '@/components/picShow.vue'
 import picinfo from '@/components/photoinfo.vue'
 import goodList from '@/components/goodList.vue'
+import goodsInfo from '@/components/goodsInfo.vue' 
+import goodsdescribe from '@/components/describe.vue' 
+import goodscomment from '@/components/goodscomment.vue'
 
 Vue.use(Router)
 
@@ -53,6 +56,21 @@ export default new Router({
     {
       path: '/home/goodList',
       component: goodList
+    },
+    {
+      path: '/home/goodsInfo/:id',
+      name: 'goodsInfo',
+      component: goodsInfo
+    },
+    {
+      path: '/home/describe/:id',
+      name: 'goodsdescribe',
+      component: goodsdescribe
+    },
+    {
+      path: '/home/comment/:id',
+      name: 'goodscomment',
+      component: goodscomment
     },
     {
       path: '/',

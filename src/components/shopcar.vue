@@ -1,113 +1,121 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+  <div class="shopcar-container">
+  <div class="goods-list">
+    <!-- 商品列表项区域 -->
+    <div class="mui-card" v-for="(item, index) in goodslist" :key="item.id">
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <mt-switch @change="switchChange(item.id, $store.getters.getGoodsSelected[item.id])" v-model="$store.getters.getGoodsSelected[item.id]"></mt-switch>
+          <img :src="item.thumb_path">
+          <div class="info">
+            <h1>{{ item.title }}</h1>
+            <div>
+              <span class="price">￥{{item.sell_price}}</span>
+              <number-box :initcount="$store.getters.getGoodsCount[item.id]" :goodsid="item.id"></number-box>
+              <a href="#" @click.prevent="remove(item.id, index)">删除</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+    <!-- 结算区域 -->
+  <div class="mui-card">
+    <div class="mui-card-content">
+      <div class="mui-card-content-inner jiesuan">
+        <div class="left">
+          <p>总计（不含运费）</p>
+          <p>已勾选商品 <span class="red">{{ $store.getters.shopcarGoodsCount.allCount }}</span> 件， 总价 <span class="red">{{ $store.getters.shopcarGoodsCount.allPrice }}</span></p>
+        </div>
+        <mt-button type="danger">去结算</mt-button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
+import mui from "../assets/mui/js/mui.min";
+import numberBox from "./NumberBox.vue";
 export default {
-  name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      goodslist: ''
     }
+  },
+  mounted() {
+    mui(".mui-numbox").numbox();
+  },
+  created(){
+    this.getGoodsList()
+},
+methods: {
+  getGoodsList() {
+    // 1. 获取到 store 中所有的商品的Id，然后拼接出一个 用逗号分隔的 字符串
+    var idArr = [];
+    this.$store.state.car.forEach(item => idArr.push(item.id));
+    // 如果 购物车中没有商品，则直接返回，不需要请求数据接口，否则会报错
+    if (idArr.length <= 0) {
+      return;
+    }
+    // 获取购物车商品列表
+    this.$http
+      .get("api/goods/getshopcarlist/" + idArr.join(","))
+      .then(result => {
+        if (result.body.status === 0) {
+          this.goodslist = result.body.message;
+        }
+      });
+  },
+  remove (id,index) {
+    this.goodslist.splice(index,1);
+    this.$store.commit('removeFormatCar',id);
+  },
+  switchChange (id,val) {
+    this.$store.commit('updateSelected',{id, selected:val});
   }
+},
+components: {
+  'number-box':numberBox
+}
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+<style scoped lang="scss">
+.shopcar-container {
+  background-color: #eee;
+  overflow: hidden;
+  .goods-list {
+    .mui-card-content-inner {
+      display: flex;
+      align-items: center;
+    }
+    img {
+      width: 60px;
+    }
+    h1 {
+      font-size: 13px;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .price {
+        color: red;
+        font-weight: bold;
+      }
+    }
+  }
+  .jiesuan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .red {
+      color: red;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
 }
 </style>

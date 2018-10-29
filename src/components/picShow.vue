@@ -56,7 +56,6 @@ export default {
           this.$http.get('api/getimages/' + id).then(result => {
               if (result.body.status === 0) {
                   this.list = result.body.message;
-                  console.log(this.list)
               }else {
                   Toast('获取信息失败');
               }

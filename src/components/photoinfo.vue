@@ -9,7 +9,7 @@
         <!-- 缩略图区域 -->
         <div class="thumbs">
             <template>
-                <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
+                <vue-preview :slides="slide1"></vue-preview>
             </template>     
         </div>
         <!-- 图片内容区域 -->
@@ -47,7 +47,6 @@ export default {
         },
         getThumbs () {
             this.$http.get('api/getthumimages/' + this.id).then(result => {
-                console.log(result.body.message);
                 if (result.body.status === 0) {
                     result.body.message.forEach(item => {
                         item.h = 400;
@@ -59,10 +58,7 @@ export default {
                     Toast('获取图片失败');
                 }
             })
-        },
-        handleClose () {
-            console.log('close event')
-      }
+        }
     },
     components: {
         'cmt-box': comment,
@@ -90,16 +86,20 @@ export default {
     line-height: 30px;
   }
 .thumbs {
-    /deep/ img {
-    height: 94px;
-    width: 94px;
-    margin: 10px;
-    box-shadow: 0 0 8px #999;
+    /deep/ .my-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        /deep/ figure {
+            width: 30%;
+            margin: 5px;
+       /deep/ img {
+            height: 100%;
+            width: 100%;
+            box-shadow: 0 0 8px #999;
   }
-    /deep/ figure {
-        margin: 0;
-        display: inline-block;
     }
+    }
+    
 }
 }
 </style>
